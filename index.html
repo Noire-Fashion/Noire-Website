@@ -253,6 +253,19 @@ First, the user has provided a partial code snippet, and I need to complete it. 
         .overlay.show {
             display: block;
         }
+        .share-button {
+    background: #eee;
+    color: #333;
+    padding: 5px 10px;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: all 0.2s ease;
+}
+.share-button:hover {
+    background: #ddd;
+}
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -468,7 +481,71 @@ First, the user has provided a partial code snippet, and I need to complete it. 
                 occasion: "casual",
                 price: 25.99,
                 gender: "men"
-            }
+            },
+            {
+                id: 8,
+                title: "TACVASEN Men's Lightweight Bomber Jacket",
+                description: "TACVASEN Men's Lightweight Casual Bomber Jacket — Spring/Fall Windbreaker with Full Zipper, Stand Collar, and Comfortable Soft Material for Everyday Wear",
+                image: "https://m.media-amazon.com/images/I/71rNJdgvB1L._AC_SX679_.jpg", // replace with the actual image URL if available
+                link: "https://amzn.to/49DAElE",
+                category: "clothing",
+                subCategory: "jacket",
+                tags: ["lightweight", "bomber", "windbreaker", "casual"],
+                season: "spring/fall",
+                material: "polyester",
+                occasion: "casual",
+                price: 35.98, // update with current price if known
+                gender: "men"
+            },
+            {
+    id: 9,
+    title: "Casio Classic Quartz Men's Watch",
+    description: "Casio Classic Quartz Analog Wristwatch for Men — Everyday Casual & Timeless Design with Reliable Quartz Movement, Durable Build, and Water Resistance",
+    image: "https://m.media-amazon.com/images/I/51DuIbRU7JL._AC_SX522_.jpg",
+    link: "https://amzn.to/4bRiE8N",
+    category: "accessories",
+    subCategory: "watch",
+    tags: ["quartz", "analog", "classic", "casual"],
+    season: "all",
+    material: "metal & resin",
+    occasion: "everyday",
+    price: 27.25,
+    gender: "men"
+},
+{
+    id: 10,
+    title: "FULLRON Men's Winter Warm Scarf",
+    description: "FULLRON Men's Winter Warm Scarf — Soft, Long, Cashmere-Feel Winter Neck Scarf That Keeps You Warm and Comfortable in Cold Weather",
+    image: "https://m.media-amazon.com/images/I/51Z1rPNKXdL._AC_SY741_.jpg", // replace with actual fetched Amazon image URL if needed
+    link: "https://amzn.to/45we0t0",
+    category: "clothing",
+    subCategory: "accessory",
+    tags: ["winter", "scarf", "warm", "soft", "cashmere feel"],
+    season: "winter",
+    material: "soft cashmere-feel fabric",
+    occasion: "cold weather",
+    price: 0, // update with current price if known
+    gender: "men"
+},
+{
+    id: 11,
+    title: "SISKIN Women's Ribbed Long Sleeve Pullover Sweater",
+    description: "SISKIN Women's Ribbed Knit Pullover Sweater — Long Sleeve, Comfortable Fit, Stylish Casual Top Perfect for Fall & Winter Outfit Pairing",
+    image: "https://m.media-amazon.com/images/I/716rrd0nH6L._AC_SY741_.jpg", 
+    link: "https://amzn.to/4r7fvpH",
+    category: "clothing",
+    subCategory: "sweater",
+    tags: ["ribbed", "pullover", "long sleeve", "knit"],
+    season: "fall/winter",
+    material: "knit fabric",
+    occasion: "casual",
+    price: 36.99, // update with current price if known
+    gender: "women"
+}
+
+
+
+
             // Add more products here with the same structure
         ];
 
@@ -487,7 +564,6 @@ First, the user has provided a partial code snippet, and I need to complete it. 
         const fuse = new Fuse(products, fuseOptions);
 
         // Render products
-                // ---------- RENDER ----------
 function renderProducts(list) {
     const grid = document.getElementById("product-grid");
     grid.innerHTML = "";
@@ -500,16 +576,34 @@ function renderProducts(list) {
     list.forEach(p => {
         const card = document.createElement("div");
         card.className = "product-card";
+
+        // URL to your website product page
+        const siteLink = `${window.location.origin}/?product=${p.id}`;
+
         card.innerHTML = `
             <img src="${p.image}" alt="${p.title}">
             <h3>${p.title}</h3>
             <p>${p.description}</p>
             <div class="price">$${p.price}</div>
             <a href="${p.link}" target="_blank" class="amazon-button">View on Amazon</a>
+            <button class="share-button" data-link="${siteLink}">🔗 Share</button>
         `;
         grid.appendChild(card);
     });
+
+    // Add share button functionality
+    document.querySelectorAll(".share-button").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const link = e.target.getAttribute("data-link");
+            navigator.clipboard.writeText(link).then(() => {
+                e.target.textContent = "✅ Copied!";
+                setTimeout(() => { e.target.textContent = "🔗 Share"; }, 1500);
+            });
+        });
+    });
 }
+
+
 
 // Initial load
 renderProducts(products);
