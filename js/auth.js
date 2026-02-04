@@ -63,25 +63,23 @@ const auth = {
         }
     },
 
-    async signInWithGoogle() {
-        if (!window.supabaseClient) {
-            this.showMessage('System is loading... please try again in a moment.');
-            return;
-        }
-        
-        try {
-            const { error } = await window.supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: window.location.origin + window.location.pathname
-                }
-            });
-            if (error) throw error;
-        } catch (err) {
-            console.error('Google signin error:', err);
-            this.showMessage('Google signin failed: ' + (err.message || 'Please try again.'));
-        }
-    },
+   async signInWithGoogle() {
+    if (!window.supabaseClient) {
+        this.showMessage('System is loading... please try again in a moment.');
+        return;
+    }
+
+    try {
+        const { error } = await window.supabaseClient.auth.signInWithOAuth({
+            provider: 'google'
+        });
+        if (error) throw error;
+    } catch (err) {
+        console.error('Google signin error:', err);
+        this.showMessage('Google signin failed. Please try again.');
+    }
+},
+
 
     showMessage(msg) {
         document.getElementById('auth-message').textContent = msg;
