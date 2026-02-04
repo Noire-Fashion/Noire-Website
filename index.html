@@ -875,6 +875,8 @@ First, the user has provided a partial code snippet, and I need to complete it. 
 
         // Render products
 function renderProducts(list) {
+    cart.fetch().then(() => renderProducts(products));  // Sync cart on load
+profile.load();
     const grid = document.getElementById("product-grid");
     grid.innerHTML = "";
 
@@ -1025,6 +1027,7 @@ overlay.addEventListener("click", () => {
 <script src="/js/profile.js"></script>
 </body>
 </html>
+
 
 
 
