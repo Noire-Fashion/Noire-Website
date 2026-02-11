@@ -4,6 +4,9 @@ window.auth = {
   isLoggedIn: false,
 
   async init() {
+    // IMPORTANT: handle OAuth redirect
+    await window.supabaseClient.auth.getSession()
+
     const { data: { session } } = await window.supabaseClient.auth.getSession()
 
     this.isLoggedIn = !!session
@@ -43,8 +46,16 @@ window.auth = {
     }
   },
 
-  showModal(callback) {
-    alert("Please login first.")
-    // You can improve this later
+  async requireLogin(callback) {
+    if (this.isLoggedIn) {
+      await callback()
+    } else {
+      await window.supabaseClient.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://noire-fashion.github.io/Noire-Website/"
+        }
+      })
+    }
   }
 }
